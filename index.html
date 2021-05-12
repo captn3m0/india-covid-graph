@@ -98,6 +98,20 @@ d3.csv("http://localhost:8000/active.csv",
     focusText.style("opacity",1)
   }
 
+  function genLinks(id, data) {
+    document.getElementById(id).innerHTML = ''
+    data.forEach(x=>{
+      var a = document.createElement('a');
+      var link = document.createTextNode(x.title);
+      a.appendChild(link);
+      a.title = x.title
+      a.href = x.url
+      var li = document.createElement('li');
+      li.appendChild(a);
+      document.getElementById(id).appendChild(li);
+    })
+  }
+
   function mousemove() {
     // recover coordinate we need
     var x0 = x.invert(d3.mouse(this)[0]);
@@ -107,6 +121,23 @@ d3.csv("http://localhost:8000/active.csv",
 
     selectedData = data[i]
     formattedDate = selectedData.date.getDate() + " "  + MONTHS[selectedData.date.getMonth()];
+
+    // TODO: Run across all publications
+    newsToShow = NEWS['wire'].filter(article=>{
+      // TODO: Parse on load, not filter
+      // var d =
+      // console.log(d)
+      var z  = d3.timeParse("%Y-%m-%d")(article.date)
+      // console.log(z)
+      // return false;
+      return (z.getDate() == selectedData.date.getDate() &&
+        z.getMonth() == selectedData.date.getMonth() &&
+        z.getYear() == selectedData.date.getYear())
+    })
+
+    genLinks('wire', newsToShow)
+    // console.log(newsToShow.length);
+
     focus
       .attr("cx", x(selectedData.date))
       .attr("cy", y(selectedData.value))
@@ -122,4 +153,29 @@ d3.csv("http://localhost:8000/active.csv",
 
 })
 
+NEWS={};
+
+d3.csv("http://localhost:8000/wire.csv",
+// When reading the csv, I must format variables:
+  function(d){
+
+    NEWS['wire'] = d.map(x=>{
+      return {title:x.title,
+      url:x.url,
+      date:x.date.substr(0,10)}
+    }
+    )
+    // console.log(d)
+    // return { date : d3.timeParse("%Y-%m-%d")(d.date.substr(0,11)), id : d.id,
+    // url:d.url,title:d.title }
+  });
+
 </script>
+
+<section>
+  <article>
+    <ul id="wire">
+
+    </ul>
+  </article>
+</section>
