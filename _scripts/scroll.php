@@ -20,7 +20,9 @@ $articles = [];
 
 for($i=1; $i<=$totalPageCount; $i++) {
 	$pageArticles = fetch_page($i, true);
-	assert(len($pageArticles) > 0);
+	if(count($pageArticles) == 0) {
+		break;
+	}
 	$articles = array_merge($articles, $pageArticles);
 }
 
