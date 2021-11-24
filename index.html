@@ -24,7 +24,7 @@ var svg = d3.select("#my_dataviz")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("http://localhost:8000/active.csv",
+d3.csv("/active.csv",
 
   // When reading the csv, I must format variables:
   function(d){
@@ -38,9 +38,10 @@ d3.csv("http://localhost:8000/active.csv",
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
       .range([ 0, width ]);
+
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%b")));
 
     // Add Y axis
     var y = d3.scaleLinear()
@@ -155,7 +156,7 @@ d3.csv("http://localhost:8000/active.csv",
 
 NEWS={};
 
-d3.csv("http://localhost:8000/wire.csv",
+d3.csv("/wire.csv",
 // When reading the csv, I must format variables:
   function(d){
 
