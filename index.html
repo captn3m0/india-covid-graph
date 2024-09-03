@@ -124,7 +124,7 @@ d3.csv("/active.csv",
     formattedDate = selectedData.date.getDate() + " "  + MONTHS[selectedData.date.getMonth()];
 
     // TODO: Run across all publications
-    newsToShow = NEWS['wire'].filter(article=>{
+    newsToShow = NEWS['thewire'].filter(article=>{
       // TODO: Parse on load, not filter
       // var d =
       // console.log(d)
@@ -136,7 +136,7 @@ d3.csv("/active.csv",
         z.getYear() == selectedData.date.getYear())
     })
 
-    genLinks('wire', newsToShow)
+    genLinks('thewire', newsToShow)
     // console.log(newsToShow.length);
 
     focus
@@ -156,11 +156,11 @@ d3.csv("/active.csv",
 
 NEWS={};
 
-d3.csv("/wire.csv",
+d3.csv("/thewire.csv",
 // When reading the csv, I must format variables:
   function(d){
 
-    NEWS['wire'] = d.map(x=>{
+    NEWS['thewire'] = d.map(x=>{
       return {title:x.title,
       url:x.url,
       date:x.date.substr(0,10)}
@@ -175,7 +175,7 @@ d3.csv("/wire.csv",
 
 <section>
   <article>
-    <ul id="wire">
+    <ul id="thewire">
 
     </ul>
   </article>
